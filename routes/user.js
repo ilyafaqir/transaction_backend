@@ -3,20 +3,16 @@ const User = require('../models/User');
 const Group = require('../models/Group');
 
 const router = express.Router();
-
-
 router.put('/add-group/:userId', async (req, res) => {
   const { userId } = req.params; 
   const { groupId } = req.body; 
 
   try {
-
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'Utilisateur non trouvé.' });
     }
-
-
+    
     const group = await Group.findById(groupId);
     if (!group) {
       return res.status(404).json({ message: 'Groupe non trouvé.' });

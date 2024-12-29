@@ -17,8 +17,6 @@ router.post('/', async (req, res) => {
       user,
       description,
     });
-
-
     await newExpense.save();
     res.status(201).json({ message: 'Expense created successfully', expense: newExpense });
   } catch (error) {
