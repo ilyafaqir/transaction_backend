@@ -23,14 +23,14 @@ router.post('/', async (req, res) => {
 
 });
 router.post('/add-participant', async (req, res) => {
-  const { groupId, participantId } = req.body;   
+  const { groupId, participantId } = req.body; 
 
   if (!groupId || !participantId) {
     return res.status(400).json({ message: 'ID du groupe et ID du participant requis.' });
   }
 
   try {
-    
+    // Trouver le groupe par son ID
     const group = await Group.findById(groupId);
 
     if (!group) {
@@ -44,17 +44,15 @@ router.post('/add-participant', async (req, res) => {
       return res.status(404).json({ message: 'Utilisateur non trouvé.' });
     }
 
-    
+    // Vérifier si le participant est déjà dans le groupe
     if (group.participants.includes(participantId)) {
       return res.status(400).json({ message: 'Le participant est déjà dans ce groupe.' });
     }
 
-     
     group.participants.push(participantId);
 
-     
     user.groups.push(groupId);
- 
+
     await group.save();
     await user.save();
 
@@ -66,36 +64,41 @@ router.post('/add-participant', async (req, res) => {
 
 
 router.post('/subtract', async (req, res) => {
-  const { groupId, amount, userId, description } = req.body;  
- 
+  const { groupId, amount, userId, description } = req.body;  // Recevoir groupId, amount, userId et description dans le corps de la requête
+
+  // Vérifier si le montant est valide
   if (!amount || amount <= 0) {
     return res.status(400).json({ message: 'Montant invalide pour la soustraction.' });
   }
 
   try {
- 
+    // Trouver le groupe par son ID
     const group = await Group.findById(groupId);
     if (!group) {
       return res.status(404).json({ message: 'Groupe non trouvé.' });
     }
- 
+
+
     group.price -= amount;
+
+    
     const newExpense = new Expense({
-      name: 'Soustraction du groupe',  
+      name: 'Soustraction du groupe', 
       amount: amount,
       description: description || 'Aucune description',
-      user: userId,   
+      user: userId,  
       groupId: groupId  
     });
 
- 
+  
     await newExpense.save();
 
- 
-    group.expenses.push(newExpense._id);  
+     group.expenses.push(newExpense._id); 
+
+
     await group.save();
 
-  
+ 
     res.status(200).json({ message: 'Montant soustrait avec succès.', expense: newExpense });
 
   } catch (err) {
@@ -104,38 +107,38 @@ router.post('/subtract', async (req, res) => {
 });
 
  
+
+  
   router.post('/add', async (req, res) => {
-    const { groupId, amount, userId, description } = req.body;   
+    const { groupId, amount, userId, description } = req.body;  // Recevoir groupId, amount, userId et description dans le corps de la requête
+  
     if (!amount || amount <= 0) {
       return res.status(400).json({ message: 'Montant invalide pour l\'ajout.' });
     }
   
     try {
-  
+
       const group = await Group.findById(groupId);
       if (!group) {
         return res.status(404).json({ message: 'Groupe non trouvé.' });
       }
   
-      
+      // Ajouter le montant au prix du groupe
       group.price += amount;
   
-      // Créer une nouvelle dépense liée à ce groupe et à un utilisateur
       const newExpense = new Expense({
-        name: 'Ajout au groupe',  
+        name: 'Ajout au groupe', 
         amount: amount,
         description: description || 'Aucune description', 
-        user: userId,   
-        groupId: groupId 
+        user: userId,  
+        groupId: groupId  
       });
   
- 
       await newExpense.save();
   
-     
-      group.expenses.push(newExpense._id);  
+      /
+      group.expenses.push(newExpense._id); 
   
-     
       await group.save();
   
     
@@ -162,15 +165,14 @@ router.get('/', async (req, res) => {
 
 
 router.post('/participants', async (req, res) => {
-  const { groupId } = req.body;  // Recevoir groupId dans le corps de la requête
+  const { groupId } = req.body;  
 
   try {
-    
+
     if (!mongoose.Types.ObjectId.isValid(groupId)) {
       return res.status(400).json({ message: 'ID du groupe invalide.' });
     }
 
-    
     const group = await Group.findById(groupId).populate('participants'); 
 
     if (!group) {
