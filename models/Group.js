@@ -7,8 +7,8 @@ const groupSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true,  // Vous pouvez définir "required: true" si vous voulez qu'un prix soit obligatoire.
-    default: 0,      // Définir une valeur par défaut si nécessaire
+    required: true,   
+    default: 0,      
   },
   participants: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -21,10 +21,15 @@ const groupSchema = new mongoose.Schema({
   admin: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,  // Le champ admin est requis car un groupe doit avoir un administrateur.
+    required: true, 
+  },
+  seuil: {  
+    type: Number,
+    required: false,  
+    default: 0, 
   },
 });
-// Ajouter une dépense à un groupe
+ 
  
 
 module.exports = mongoose.model('Group', groupSchema);

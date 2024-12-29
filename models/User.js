@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   groups: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Group', // Référence au modèle Group
+      ref: 'Group', 
     }
   ]
 });
