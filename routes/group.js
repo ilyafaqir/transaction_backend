@@ -148,12 +148,7 @@ router.get('/:groupId/participants', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Erreur serveur', error: err.message });
   }
-});
-
-
- 
-
- 
+})
 
 
 module.exports = router;
