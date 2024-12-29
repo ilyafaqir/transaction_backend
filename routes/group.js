@@ -136,7 +136,7 @@ router.post('/subtract', async (req, res) => {
   
       await newExpense.save();
   
-      /
+    
       group.expenses.push(newExpense._id); 
   
       await group.save();
