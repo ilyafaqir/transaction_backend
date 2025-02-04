@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Expense = require('../models/Expense');
 
-// Route POST pour créer une dépense
+
 router.post('/', async (req, res) => {
   try {
     const { name, amount, user, description } = req.body;

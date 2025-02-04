@@ -3,8 +3,8 @@ const User = require('../models/User');
 const Group = require('../models/Group');
 
 const router = express.Router();
-router.put('/add-group/:userId', async (req, res) => {
-  const { userId } = req.params; 
+router.put('/add-group', async (req, res) => {
+  const { userId } = req.body; 
   const { groupId } = req.body; 
 
   try {
